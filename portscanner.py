@@ -1,21 +1,31 @@
-import  socket
-from asyncio import timeout
-
+import socket
 from IPy import IP
 
-target = input(f"[*] Enter a target to scan : ")
-# port = int(input("enter a port to check :"))
-port=[80,8080,443,5500]
-def portScan(target , port ) :
+ports = [80, 8080, 443, 5500,22,23, 53]
 
+def port_scan(target, port):
     try:
         sock = socket.socket()
-        # sock,timeout(5)
-        sock.connect(( target , port ))
-        print(f"port {port} is open ")
-    except:
-        print(f"Port {port} is closed")
+        sock.settimeout(1)
+        result = sock.connect_ex((target, port))
 
-for i in port:
-    portScan(target,i)
-# sock.close()
+        if result == 0:
+            print(f"[+] Port {port} is open")
+
+        sock.close()
+
+    except:
+        pass
+
+def scan(target):
+    print(f"\n[*] Scanning target: {target}")
+    for port in ports:
+        port_scan(target, port)
+
+targets = input("[*] Enter target(s) (comma-separated): ")
+
+if "," in targets:
+    for ip in targets.split(","):
+        scan(ip.strip())
+else:
+    scan(targets.strip())
