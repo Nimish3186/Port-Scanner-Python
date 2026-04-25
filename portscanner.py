@@ -14,6 +14,7 @@ def port_scan(target, port):
         if result == 0:
             try:
                 banner = grabBanner(sock)
+                # decoded = banner.decode().strip('\n')
                 print(f"[+] Port {port} is open and is running {banner}")
             except:
                 print(f"[+] Port {port} is open but noting to grab")
@@ -26,12 +27,12 @@ def port_scan(target, port):
 def scan(target):
     print(f"\n[*] Scanning target: {target}")
     for port in ports:
-        port_scan(target, port)
+            port_scan(target, port)
+if __name__=="__main__":
 
-targets = input("[*] Enter target(s) (comma-separated): ")
-
-if "," in targets:
-    for ip in targets.split(","):
-        scan(ip.strip())
-else:
-    scan(targets.strip())
+    targets = input("[*] Enter target(s) (comma-separated): ")
+    if "," in targets:
+        for ip in targets.split(","):
+            scan(ip.strip())
+    else:
+        scan(targets.strip())
